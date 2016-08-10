@@ -9,9 +9,9 @@ function [Raw,filtered,envelope,t] = emg_plot(data,notch)
 %****************************************************
 %               INITIALIZE & CHECK                  %
 %****************************************************
-EMG =[];cwd = [];Raw =[];filtered=[];envelope=[];lim=[];
+close all;EMG =[];cwd = [];Raw =[];filtered=[];envelope=[];lim=[];
+str = 'Channel. '; sfreq = 2000;%constant in trigno
 
-sfreq = 2000;%constant in trigno
 if ischar(data)==1
     disp ('Load Data')
     data = load (data);
@@ -32,14 +32,14 @@ for k=1:size(data,2)
         i=i+1;
     end
 end
-data = cwd;
 Raw = cwd;
+
 %%
 %****************************************************
 %        SIGNAL PROCESSING & INIT ANALYSIS          %
 %****************************************************
 %DETREND
-    data = detrend (data,'constant');
+    data = detrend (Raw,'constant');
     
 %FILTERING
     [b,a] = butter(2,5/(sfreq/2),'high');             
@@ -58,20 +58,24 @@ end
 for n = 1:size(DataDifFil,2);
     fig=figure(2);set(fig,'units','normalized','outerposition',[0 0 0.5 1])
     [p,f] = pwelch (DataDifFil(:,n),sfreq,round(0.9*sfreq),sfreq,sfreq);
-    subplot(ceil(size(DataDifFil,2)/2),2,n)
-    plot(f,p,'color','r'); 
+    handle(column(n)) = subplot(ceil(size(DataDifFil,2)/2),2,n); plot(f,p,'color','r'); 
+    title(strcat(str ,num2str(column(n))))
     ax = gca; ax.XColor = 'white'; ax.YColor = 'white'; box off
     if n ==1
         ax.XColor = 'black';ax.YColor = 'black';
     end
     limit(n,:) = ylim;
-    xlim([0 500]);
+    xlim([0 600]);
     xlabel('Frequency');ylabel('Power');
     axes('Position',[0 0 1 1],'Xlim',[0 1],'Ylim',[0 1],'Box','off','Visible','off','Units','normalized', 'clipping' , 'off');
     text(0.5, 1,'\bf Welch Spectral Frequency Analysis of Raw Signal','HorizontalAlignment' ,'center','VerticalAlignment', 'top')
     drawnow
 end
     %Plot properties
+    for p = column
+        ylim(handle(p),[0 max(limit(:))])
+    end
+    
     set(gcf,'color','w');
     filtered = DataDifFil;
 %%
@@ -82,7 +86,6 @@ end
 data=DataDifFil;
 data = abs(data);
 figure(3);set(fig,'units','normalized','outerposition',[0 0 0.5 1]);
-str = 'Channel. ';
 for i=1:size(DataDifFil,2)
     subplot(ceil(size(DataDifFil,2)/2),2,i)
     plot(t,data(:,i),'Color',rgb('Teal'));
@@ -94,10 +97,11 @@ end
 [b,a] = butter(2, 6/(sfreq/2),'low'); 
 data = filtfilt(b,a,double(data)); 
 for i=1:size(DataDifFil,2)
-    subplot(ceil(size(DataDifFil,2)/2),2,i)
+    hand(column(i)) = subplot(ceil(size(DataDifFil,2)/2),2,i);
     plot(t,data(:,i),'r','LineWidth',2);
         ax = gca; ax.XColor = 'white'; ax.YColor = 'white'; box off;
-        ylim([0 5*10^-3]);
+%         ylim([0 5*10^-3]);
+    lim(i,:) = ylim;
     if i ==1
         ax.XColor = 'black';ax.YColor = 'Black';
     end
@@ -112,6 +116,9 @@ for i=1:size(DataDifFil,2)
 end
 set(gcf,'color','w'); 
 envelope=data; 
+    for p = column
+        ylim(hand(p),[0, max(lim(:))])
+    end
 end
 
 

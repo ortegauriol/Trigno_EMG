@@ -14,14 +14,12 @@ function [data] = read_bin(filename, s)
 %addpath('C:\Program Files\Dragonfly\src\utils\LogReader');
 %addpath('C:\Users\amcmorl\Documents\BCI\modules\data_loader');
 cd('C:\Users\amcmorl\Documents\BCI\app_configs\Synergies\Data\Test_Data');
-
 data = [];
 load('Dragonfly_config.mat');
 [Filename,PathName,FilterIndex] = uigetfile('*.bin', 'Select file...');
 rawlog = LoadRawMessageLog(Filename,DF);
 log = OrganizeLogByMsgType(rawlog,DF);
 data = log;
-
     if exist('s','var')==1
         save(strcat(Filename,'.mat'),'log','-mat')
     end

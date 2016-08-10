@@ -36,7 +36,7 @@ Raw = cwd;
 
 %%
 %****************************************************
-%        SIGNAL PROCESSING & INIT ANALYSIS          %
+%               SIGNAL INIT ANALYSIS                %
 %****************************************************
 %DETREND
     data = detrend (Raw,'constant');

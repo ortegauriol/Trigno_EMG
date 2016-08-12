@@ -3,6 +3,7 @@ function [EMG] = structure(data)
 %%This allows to change the data structure when acquired from Dragonfly bin
 %%to mat converter 
 
+%Line to test github branching
 %****************************************************
 %                Load and declare                   %
 %****************************************************

@@ -86,6 +86,7 @@ xlabel('Activation')
 axes(ha(1));
 linkaxes([ha(1),ha(2),ha(3),ha(4),ha(5),ha(6),ha(7),ha(8)],'y');
 title('Data Reconstruction Synergies')
+% Create a legend loop robust for a different number of significant synergies.
 lgd = legend('Orignal EMG', 'Reconstruct Signal', 'W1','W2','W1','Location',...
     'northoutside','Orientation','horizontal');
 set(gcf,'color','w');

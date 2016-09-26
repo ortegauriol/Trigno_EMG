@@ -1,4 +1,4 @@
-function [raw,filtered,envelope,t] = emg_plot(data,notch,det,unitv)
+function [raw,filtered,envelope,t] = emg_init_(data,notch,det,unitv)
 %%  [Raw,filtered,envelope,t] = emg_plot(data,notch,detrend)
 %
 % notch, if true 50 Hz filter is on. 
@@ -12,6 +12,7 @@ function [raw,filtered,envelope,t] = emg_plot(data,notch,det,unitv)
 
 %Pablo Ortega Auriol 29/07/2016%
 
+disp('PROCESSING EMG...')
 %%
 %****************************************************
 %               INITIALIZE & CHECK                  %
@@ -42,6 +43,7 @@ for k=1:size(data,2)
 end
 Raw = cwd;
 raw=cwd;
+
 %%
 %****************************************************
 %                SIGNAL PROCESSING                  %
@@ -79,7 +81,7 @@ end
     
 %PLOT FREQUEMCY ANALYSIS
 for n = 1:size(DataDifFil,2);
-    fig=figure(2);set(fig,'units','normalized','outerposition',[0 0 0.5 1])
+    fig=figure(1);set(fig,'units','normalized','outerposition',[0 0 0.5 1])
     [p,f] = pwelch (DataDifFil(:,n),sfreq,round(0.9*sfreq),sfreq,sfreq);
     handle(column(n)) = subplot(ceil(size(DataDifFil,2)/2),2,n); plot(f,p,'color','r'); 
     title(strcat(str ,num2str(column(n))))
@@ -111,13 +113,20 @@ filtered = data;
 %                 NORMALIZE DATA                    %
 %**************************************************** 
 %Intro MVC normalization of the data
+%Normalize to max activation of one muscle.
+
+normal = max(data(:));
+data = data./normal;
+
+%Norm to max activation of each muscle 
+%Norm to baseline
 
 %%
 
 %****************************************************
 %               PLOT FILTERED DATA                  %
 %**************************************************** 
-figure(3);set(fig,'units','normalized','outerposition',[0 0 0.5 1]);
+figure(2);set(fig,'units','normalized','outerposition',[0 0 0.5 1]);
 for i=1:size(DataDifFil,2)
     subplot(ceil(size(DataDifFil,2)/2),2,i)
     plot(t,data(:,i),'Color',rgb('Teal'));
@@ -158,15 +167,16 @@ envelope=data;
 
     disp('To synergies!! ==> data is in column format')
     
+%%    
+%****************************************************
+%        AVERAGE THE DATA OR SELECT A WINDOW        %
+%****************************************************
+    
     
 %****************************************************
 %        CONCATENATE THE DATA FOR INPUT             %
 %****************************************************
     
-
-
-
-
 
 end
 

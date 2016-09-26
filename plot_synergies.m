@@ -54,7 +54,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %          PLOT OG, RECONS & SYN_CONT            %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-
+X = {1:n_syn};
 figure();ha = tight_subplot(size(structure(n_syn).ReconData,1),1,0.01,[.1 .1],[.1 .03]);
 for g=1:size(structure(n_syn).ReconData,1)
     axes(ha(g));
@@ -67,6 +67,7 @@ for g=1:size(structure(n_syn).ReconData,1)
     % Plot each synergy contribution
     for c = 1:n_syn
         plot(structure(n_syn).W(c,p)*structure(n_syn).H(c,:),'Color',rgb(colmap(c)));
+        X{c}= ['W',num2str(c)];
     end
     
     %Plot properties
@@ -81,14 +82,12 @@ for g=1:size(structure(n_syn).ReconData,1)
     end
     hold all;box off;
 end
-ylabel('Samples')
-xlabel('Activation')
+xlabel('Samples')
+ylabel('Activation')
 axes(ha(1));
-linkaxes([ha(1),ha(2),ha(3),ha(4),ha(5),ha(6),ha(7),ha(8)],'y');
+% linkaxes([ha(1),ha(2),ha(3),ha(4),ha(5),ha(6),ha(7),ha(8)],'y');
 title('Data Reconstruction Synergies')
-lgd = legend('Orignal EMG', 'Reconstruct Signal', 'W1','W2','W1','Location',...
-    'northoutside','Orientation','horizontal');
+X = ['Orignal EMG', 'Reconstruct Signal',X];
+legend(X,'Location','northoutside','Orientation','horizontal');
 set(gcf,'color','w');
-
-
 end

@@ -1,7 +1,8 @@
 function [n_synergies] = select_syn(syn_struct)
 %[n_synergies] = select_syn() 
 %Calculate a sygnificant number of synergies based on VAF>90 && VAFmus>80
-
+% Created; September 29, 2016
+% ortegauriol@gmail.com
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -43,6 +44,6 @@ ah = annotation('textarrow','String',str);
      ah.HeadStyle = 'astroid';
      grid on
 hold all;
-disp('NUMERO SIGNIFICATIVO DE SYNERGIAS =')
-disp(n_synergies)
+X = ['Signifficant number of synergies == ',num2str(n_synergies)];
+disp(X)
 end

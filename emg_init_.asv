@@ -1,5 +1,5 @@
 function [raw,filtered,envelope,t] = emg_init_(data,notch,det,unitv,sfreq)
-%%  [Raw,filtered,envelope,t] = emg_plot(data,notch,detrend,sfreq)
+%%  [Raw,filtered,envelope,t] = emg_plot(data,notch,detrend)
 %
 % notch, if true 50 Hz filter is on. 
 % detrend, if TRUE data is detrended before filter application 
@@ -10,8 +10,7 @@ function [raw,filtered,envelope,t] = emg_init_(data,notch,det,unitv,sfreq)
 %wants to be applied a second variable should be declared.
 %The function gives 3 outputs Raw, filtered, and the envelope data...
 
-% Created; September 29, 2016
-% ortegauriol@gmail.com
+%Pablo Ortega Auriol 29/07/2016%
 
 disp('PROCESSING EMG...')
 %%
@@ -25,11 +24,12 @@ if ~exist('sfreq', 'var')
 sfreq = 2000;%constant in trigno
 end
 
+
 if ischar(data)==1
     disp ('Load Data')
     data = load (data);
 else 
-    disp('Data from workspace')
+    disp('input data is an array')
 end
 t=0:1/sfreq:size(data,1)/sfreq-1/sfreq; %nice way to create time variable.
 %****************************************************
@@ -85,16 +85,13 @@ end
     DataDifFil = filtfilt(b,a,double(DataDifFil)); 
     
 %PLOT FREQUEMCY ANALYSIS
+
+
+
 %Case that data points is less than a second
-if size(DataDifFil,1)<sfreq
-   window =  size(DataDifFil,1);
-else
-    window = sfreq;
-end
-    
 for n = 1:size(DataDifFil,2);
     fig=figure(1);set(fig,'units','normalized','outerposition',[0 0 0.5 1])
-    [p,f] = pwelch (DataDifFil(:,n),window,round(0.25*window),sfreq,sfreq);
+    [p,f] = pwelch (DataDifFil(:,n),sfreq,round(0.9*sfreq),sfreq,sfreq);
     handle(column(n)) = subplot(ceil(size(DataDifFil,2)/2),2,n); plot(f,p,'color','r'); 
     title(strcat(str ,num2str(column(n))))
     ax = gca; ax.XColor = 'white'; ax.YColor = 'white'; box off
@@ -176,7 +173,8 @@ envelope=data;
         ylim(hand(p),[0, max(lim(:))])
     end
     
-    disp('To synergies!! >>>>')
+
+    disp('To synergies!! ==> data is in column format')
     
 %%    
 %****************************************************

@@ -2,9 +2,6 @@ function [syn_struct,n_syn,envelope] = global_synergy (data)
 % Created; September 29, 2016
 % ortegauriol@gmail.com
 
-
-disp('Initializing EMG Synergies...')
-
 notch = 1;
 demean = 1;
 unitv = 1;

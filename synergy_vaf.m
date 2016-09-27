@@ -10,6 +10,9 @@ function [mus_VAF, matx_VAF, ReconData,trial_VAF]= synergy_vaf(data,W,H)
 %  - URmus    matrix with error % for each muscle (e.g., error= [mus error])
 %  - UR       matrix with overall error
 
+% Created; September 29, 2016
+% ortegauriol@gmail.com
+
 disp('CALCULATING VAF...');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %               DATA ORIENTATION                 %
@@ -17,9 +20,6 @@ disp('CALCULATING VAF...');
 
 if size(data,1) > size(data,2)
     data = data';
-    disp('data transformed to row vector')
-else
-    disp ('data already in row vector')
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

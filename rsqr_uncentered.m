@@ -2,7 +2,10 @@ function [ursqr] = rsqr_uncentered(data,data_rec)
 % Function that calculates VAF as the
 %regression sum of squares/total sum of squares
 % Output
-%    - ursqr; uncentered VAF calculation stills needs *100...
+%    - ursqr; uncentered VAF calculation stills needs *100.
+
+% Created; September 29, 2016
+% ortegauriol@gmail.com
 
 data = data';
 data_rec = data_rec';

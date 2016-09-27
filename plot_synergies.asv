@@ -2,8 +2,7 @@ function plot_synergies (structure,n_syn,envelope)
 %plot_synergies (structure,n_syn)
 %function plots the signifficant number of synergies (given by select_syn.m)
 %In addition plot the reconstructed signal and coefficients. 
-% Created; September 27, 2016
-% ortegauriol@gmail.com
+
 
 str = 'Channel. ';
 
@@ -59,14 +58,12 @@ end
 %          PLOT OG, RECONS & SYN_CONT            %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 X = {1:n_syn};
-fig = figure();title('Data Reconstruction Synergies');set(gcf,'color','w');ax=gca;
-ax.YColor = 'white';ax.XColor = 'white';
-ha = tight_subplot(ceil(size(structure(n_syn).ReconData,1)/2),2,0.05,[.1 .1],[.1 .03]);
+figure();ha = tight_subplot(size(structure(n_syn).ReconData,1),2,0.01,[.1 .1],[.1 .03]);
 for g=1:size(structure(n_syn).ReconData,1)
     axes(ha(g));
     %Plot OG DATA ENVELOPE
     plot(envelope(:,g),'Color',rgb ('Black'),'LineWidth',2,'LineStyle','--');hold on 
-         title(strcat(str ,num2str(g)));hold on;
+         title(strcat(str ,num2str(g)))
     % Plot Reconstructed DATA
     plot(structure(n_syn).ReconData(g,:),'Color',rgb ('DarkRed'),'LineWidth',1.5,'LineStyle','-');hold on
 
@@ -78,7 +75,7 @@ for g=1:size(structure(n_syn).ReconData,1)
     
     %Plot properties
     ax = gca;
-    if g == size(structure(n_syn).ReconData,1)-1
+    if g == size(structure(n_syn).ReconData,1)
         ax.YColor = 'black';
         ax.XColor = 'black';
     else
@@ -90,9 +87,10 @@ for g=1:size(structure(n_syn).ReconData,1)
 end
 xlabel('Samples')
 ylabel('Activation')
-% linkaxes([ha(1),ha(2),ha(3),ha(4),ha(5),ha(6),ha(7),ha(8)],'y');
+axes(ha(1));
+linkaxes([ha(1),ha(2),ha(3),ha(4),ha(5),ha(6),ha(7),ha(8)],'y');
+title('Data Reconstruction Synergies')
 X = ['Orignal EMG', 'Reconstruct Signal',X];
-hl = legend(X,'Location','northoutside','Orientation','horizontal');
-hl.Position = [0.4 0.88 0.2 0.2];
-
+legend(X,'Location','northoutside','Orientation','horizontal');
+set(gcf,'color','w');
 end

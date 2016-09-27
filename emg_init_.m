@@ -18,7 +18,7 @@ disp('PROCESSING EMG...')
 %****************************************************
 %               INITIALIZE & CHECK                  %
 %****************************************************
-close all;EMG =[];cwd = [];Raw =[];filtered=[];envelope=[];lim=[];
+EMG =[];cwd = [];Raw =[];filtered=[];envelope=[];lim=[];
 str = 'Channel. '; 
 
 if ~exist('sfreq', 'var')

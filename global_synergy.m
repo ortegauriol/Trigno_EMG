@@ -16,7 +16,7 @@ if exist('data', 'var')
     [Raw,filtered,envelope,t] = emg_init_(data,notch,demean,unitv);drawnow;
     end
 elseif ~exist('data','var')
-    [Raw,filtered,envelope,t] = emg_init_(first_structure,notch,demean,unitv);drawnow;
+    [Raw,filtered,envelope,t] = emg_init_(first_structure('Megan9.8.0.bin.mat'),notch,demean,unitv);drawnow;
 end
 
 %****************************************************

@@ -1,7 +1,13 @@
 
-function  [data] = first_structure()
+function  [data] = first_structure(files)
 
-fid = ('pptr01115');
+addpath 'C:\Users\ortegauriol\Dropbox\PhD\Past Data and Codes\Marjolein\Trial and data'
+if ~exist('data', 'var')
+    fid = ('pptr01115');
+else
+ fid = files;
+end
+
 Nmus=8; %ncond=12; % ntrials=5; nbins=4;
 NSyn = 7;
 sfreq= 1000;

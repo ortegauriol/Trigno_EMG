@@ -30,8 +30,6 @@ EMG=[];
         xlabel('time')
         hold all
     end
-
-    
 data = EMG';  
 
 end

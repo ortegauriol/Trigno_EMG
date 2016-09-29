@@ -37,7 +37,7 @@ t=0:1/sfreq:size(data,1)/sfreq-1/sfreq; %nice way to create time variable.
 %****************************************************
 
 %Get indexes first 
-[row column] =find(data(1,:));
+[row, column] = find(data(1,:));
 % Remove data withot channels
 i=1;
 for k=1:size(data,2)    
@@ -93,12 +93,12 @@ else
 end
     
 for n = 1:size(DataDifFil,2);
-    fig=figure(1);set(fig,'units','normalized','outerposition',[0 0 0.5 1])
+    fig=figure(2);set(fig,'units','normalized','outerposition',[0 0 0.5 1])
     [p,f] = pwelch (DataDifFil(:,n),window,round(0.25*window),sfreq,sfreq);
     handle(column(n)) = subplot(ceil(size(DataDifFil,2)/2),2,n); plot(f,p,'color','r'); 
     title(strcat(str ,num2str(column(n))))
     ax = gca; ax.XColor = 'white'; ax.YColor = 'white'; box off
-    if n ==1
+    if n ==size(DataDifFil,2)
         ax.XColor = 'black';ax.YColor = 'black';
     end
     limit(n,:) = ylim;
@@ -108,9 +108,10 @@ for n = 1:size(DataDifFil,2);
     text(0.5, 1,'\bf Welch Spectral Frequency Analysis of Raw Signal','HorizontalAlignment' ,'center','VerticalAlignment', 'top')
     drawnow
 end
-    for p = column
-        ylim(handle(p),[0 max(limit(:))])
-    end
+%     Same limit for all plots y axis
+%     for p = column
+%         ylim(handle(p),[0 max(limit(:))])
+%     end
     set(gcf,'color','w');
     
 %****************************************************
@@ -138,10 +139,14 @@ data = data./normal;
 %****************************************************
 %               PLOT FILTERED DATA                  %
 %**************************************************** 
-figure(2);set(fig,'units','normalized','outerposition',[0 0 0.5 1]);
+figure(3);set(fig,'units','normalized','outerposition',[0 0 0.5 1]);
+% ha= tight_subplot(ceil(size(DataDifFil,2)/2),2,0.05,[.1 .1],[.1 .03]);
+ax = gca; ax.XColor = 'white'
 for i=1:size(DataDifFil,2)
     subplot(ceil(size(DataDifFil,2)/2),2,i)
+%     axes(ha(i))
     plot(t,data(:,i),'Color',rgb('Teal'));
+    
         title(strcat(str ,num2str(column(i))))
     hold all
 end
@@ -153,30 +158,25 @@ end
 [b,a] = butter(2, 6/(sfreq/2),'low'); 
 data = filtfilt(b,a,double(data)); 
 for i=1:size(DataDifFil,2)
-    hand(column(i)) = subplot(ceil(size(DataDifFil,2)/2),2,i);
+    subplot(ceil(size(DataDifFil,2)/2),2,i);
     plot(t,data(:,i),'r','LineWidth',2);
-        ax = gca; ax.XColor = 'white'; ax.YColor = 'white'; box off;
-%       ylim([0 5*10^-3]);
+    ax = gca; ax.XColor = 'white'; ax.YColor = 'white'; box off;
+    ylim([0 inf]);
     lim(i,:) = ylim;
-    if i ==1
+    if i ==size(DataDifFil,2)
         ax.XColor = 'black';ax.YColor = 'Black';
-    end
-    if i ==2
-        legend('Filt.& Rect.','Linear envelope','Location','best');
-    end
+    end 
+hl=legend('Filt.& Rect.','Linear envelope','Location','north','Orientation','horizontal');
+hl.Position = [0.4 0.84 0.2 0.2];
     xlabel('Time');ylabel('Amplitude (mV-Unit STD)');
     axes('Position',[0 0 1 1],'Xlim',[0 1],'Ylim',[0 1],'Box','off','Visible','off','Units','normalized', 'clipping' , 'off');
     text(0.5, 1,'\bf Filtered Signal & Envelope','HorizontalAlignment' ,'center','VerticalAlignment', 'top')
     hold all
-    
 end
 set(gcf,'color','w'); 
 envelope=data; 
-    for p = column
-        ylim(hand(p),[0, max(lim(:))])
-    end
-    
-    disp('To synergies!! >>>>')
+     
+disp('To synergies!! >>>>')
     
 %%    
 %****************************************************

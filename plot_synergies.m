@@ -34,12 +34,18 @@ for p=1:n_syn
     subplot(n_syn,3,idx(p))
     barh(W_syn(:,p),'FaceColor',rgb(colmap(p)),'EdgeColor',rgb(colmap(p)));
     box off
-    X = ['W',num2str(p)];ntitle(X,'fontsize',14)
+    X = ['W',num2str(p)];ntitle(X,'fontsize',14,'location','northeast')
     ax=gca;
     ax.TickDir = 'out';
+    if n_syn>4
+    ax.YLim = [0.5 min(size(envelope))-.5];
+    end
+    ax.XLim = [0 1];
+    if p<n_syn
+      ax.XColor = 'white';
+    end
 end
 set(gcf,'color','w');
-
 
 %Plot Coefficients
 for p=1:n_syn
@@ -52,16 +58,19 @@ for p=1:n_syn
     box off
     ax=gca;
     ax.TickDir = 'out';
+    if p<n_syn
+        ax.XTick = [];
+    end
 end
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %          PLOT OG, RECONS & SYN_CONT            %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 X = {1:n_syn};
-fig = figure();title('Data Reconstruction Synergies');set(gcf,'color','w');ax=gca;
-ax.YColor = 'white';ax.XColor = 'white';
+fig = figure();title('Data Reconstruction Synergies');set(gcf,'color','w');
+ax=gca;ax.YColor = 'white'; ax.XColor = 'white';
 ha = tight_subplot(ceil(size(structure(n_syn).ReconData,1)/2),2,0.05,[.1 .1],[.1 .03]);
+ax=gca;ax.YColor = 'white'; ax.XColor = 'white';
 for g=1:size(structure(n_syn).ReconData,1)
     axes(ha(g));
     %Plot OG DATA ENVELOPE
@@ -77,14 +86,14 @@ for g=1:size(structure(n_syn).ReconData,1)
     end
     
     %Plot properties
-    ax = gca;
-    if g == size(structure(n_syn).ReconData,1)-1
+    ax = gca; ylim([0 inf])
+    if g == size(structure(n_syn).ReconData,1)
         ax.YColor = 'black';
         ax.XColor = 'black';
     else
         ax.YColor = 'white';
         ax.XColor = 'white';
-        ax.XTick = [];
+%         ax.XTick = [];
     end
     hold all;box off;
 end

@@ -1,4 +1,4 @@
-function [mus_VAF, matx_VAF, ReconData,trial_VAF]= synergy_vaf(data,W,H)
+function [mus_VAF, matx_VAF, ReconData,trial_VAF,RHO]= synergy_vaf(data,W,H)
 %[mus_VAF, matx_VAF, ReconData,trial_VAF]= synergy_vaf(data,W,H)
 % This function calculates uncentered correlation coefficients of data and
 % reconstructed data = W*H
@@ -26,6 +26,13 @@ end
 %               RECONSTRUCT DATA                 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ReconData=W*H;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%               Reconstruction R2                %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+RHO = zeros(min(size(data),1));
+for i = 1:min(size(data))
+RHO(i) = (corr(data(i,:)',ReconData(i,:)'))^2;% 
+end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %               TRIAL/DIRECTION VAF              %
@@ -50,5 +57,8 @@ mus_VAF=100*(mus_VAF);
 X=cat(3,data,ReconData);    
 matx_VAF=(sum(sum(prod(X,3))))^2/(sum(sum(data.^2))*sum(sum(ReconData.^2)));
 matx_VAF=100*matx_VAF;
+
+
+
 
 end

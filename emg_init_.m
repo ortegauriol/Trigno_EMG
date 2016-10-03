@@ -37,7 +37,7 @@ t=0:1/sfreq:size(data,1)/sfreq-1/sfreq; %nice way to create time variable.
 %****************************************************
 
 %Get indexes first 
-[row, column] = find(data(1,:));
+[row, column] = find(data(2,:));
 % Remove data withot channels
 i=1;
 for k=1:size(data,2)    
@@ -97,7 +97,7 @@ for n = 1:size(DataDifFil,2);
     [p,f] = pwelch (DataDifFil(:,n),window,round(0.25*window),sfreq,sfreq);
     handle(column(n)) = subplot(ceil(size(DataDifFil,2)/2),2,n); plot(f,p,'color','r'); 
     title(strcat(str ,num2str(column(n))))
-    ax = gca; ax.XColor = 'white'; ax.YColor = 'white'; box off
+    ax = gca; ax.XColor = 'white'; ax.YColor = 'white'; box off;
     if n ==size(DataDifFil,2)
         ax.XColor = 'black';ax.YColor = 'black';
     end
@@ -105,8 +105,8 @@ for n = 1:size(DataDifFil,2);
     xlim([0 600]);
     xlabel('Frequency');ylabel('Power');
     axes('Position',[0 0 1 1],'Xlim',[0 1],'Ylim',[0 1],'Box','off','Visible','off','Units','normalized', 'clipping' , 'off');
-    text(0.5, 1,'\bf Welch Spectral Frequency Analysis of Raw Signal','HorizontalAlignment' ,'center','VerticalAlignment', 'top')
-    drawnow
+    text(0.5, 1,'\bf Welch Spectral Frequency Analysis of Raw Signal','HorizontalAlignment' ,'center','VerticalAlignment', 'top');
+    drawnow;
 end
 %     Same limit for all plots y axis
 %     for p = column
@@ -141,7 +141,7 @@ data = data./normal;
 %**************************************************** 
 figure(3);set(fig,'units','normalized','outerposition',[0 0 0.5 1]);
 % ha= tight_subplot(ceil(size(DataDifFil,2)/2),2,0.05,[.1 .1],[.1 .03]);
-ax = gca; ax.XColor = 'white'
+ax = gca; ax.XColor = 'white';
 for i=1:size(DataDifFil,2)
     subplot(ceil(size(DataDifFil,2)/2),2,i)
 %     axes(ha(i))

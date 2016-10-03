@@ -10,7 +10,7 @@ unitv = 1;  % To apply unit variance ==1
 %                   DATA LOADER                     %
 %****************************************************
 if ~exist('data','var')
-    [data] = uigetfile('*.mat','Multiselect','off');
+    [data] = uigetfile('*.mat','Multiselect','on');
 end
 
 % If specified data is a file in the workspace take it into an array. 
@@ -51,9 +51,10 @@ for m = 1:nmus-1
    syn_struct(m).synergy = m;
    [syn_struct(m).W,syn_struct(m).H,syn_struct(m).D] = synergies(envelope,m,nmus,1);
    [syn_struct(m).mus_VAF, syn_struct(m).matx_VAF, syn_struct(m).ReconData,...
-        syn_struct(m).trial_VAF]= synergy_vaf(envelope,syn_struct(m).W,syn_struct(m).H);     
+        syn_struct(m).trial_VAF,syn_struct(m).ReconR2]= synergy_vaf(envelope,syn_struct(m).W,syn_struct(m).H);     
 end
 
 n_syn = select_syn(syn_struct);
-plot_synergies(syn_struct,n_syn,envelope);
+[Recon_W, W_Contr] = plot_synergies(syn_struct,n_syn,envelope);
+
 end

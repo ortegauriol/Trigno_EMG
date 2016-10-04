@@ -6,6 +6,7 @@ disp('Initializing EMG Synergies...')
 notch = 1;  % To apply notch filter == 1
 demean = 1; % Substract the Data mean == 1
 unitv = 1;  % To apply unit variance ==1
+shuffle = 0;
 %****************************************************
 %                   DATA LOADER                     %
 %****************************************************
@@ -23,7 +24,7 @@ if ischar(data)
 end
 
 if ischar(data)
-    load(data)
+    load(data);
 end
 
 %Check if data is from diran files
@@ -31,10 +32,21 @@ if isfield(data,'Data')
     data = first_structure(data);
 end
 
+%****************************************************
+%                  SHUFFLE DATA                     %
+%****************************************************
+
+if shuffle == 1;
+   data = shuffle_data(data); 
+end
+
+%****************************************************
+%                 EMG PROCESSING                    %
+%****************************************************
 % If data is in workspace as variable, check file orientation and EMG processing
 if exist('data', 'var') 
     if size(data,2) > size(data,1)
-        data = data'
+        data = data';disp('**');
         [Raw,filtered,envelope,t] = emg_init_(data,notch,demean,unitv);drawnow;
     else
         [Raw,filtered,envelope,t] = emg_init_(data,notch,demean,unitv);drawnow;
